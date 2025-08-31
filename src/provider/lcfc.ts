@@ -3,6 +3,7 @@ import axios from 'axios';
 import type { GetUserInfoFn, RedirectFn, GetUserListFn, GetOrgListFn } from 'type';
 import { UserPrefix } from 'userPrefix';
 import type { IncrementalUserData } from '../database/model/incrementalUser';
+import { get } from 'http';
 
 const { FastGPTUserService } = await import('../database');
 
@@ -19,8 +20,11 @@ const OAuth2AvatarMap = process.env.OAUTH2_AVATAR_MAP || '';
 const OAuth2MemberNameMap = process.env.OAUTH2_MEMBER_NAME_MAP || '';
 const OAuth2ContactMap = process.env.OAUTH2_CONTACT_MAP || '';
 
-const authcode = process.env.AUTHCODE || 'QUlBUC1hcHBrZXkjQGF1dGhAIzR3eDBQQTli';
-const code = process.env.CODE || '2025082913511688';
+const userAuthcode = process.env.USERAUTHCODE || 'QUlBUC1hcHBrZXkjQGF1dGhAIzR3eDBQQTli';
+const userCode = process.env.USERCODE || '2025082913511688';
+const orgAuthcode = process.env.ORGAUTHCODE || 'QUlBUC1hcHBrZXkjQGF1dGhAIzR3eDBQQTli';
+const orgCode = process.env.ORGCODE || '2025082913511688';
+
 const userListUrl = process.env.USERLISTURL || '/esb/lcfc/GetPersons';
 const orgListUrl = process.env.ORGLISTURL || '/esb/lcfc/GetSegments';
 const baseUrl = process.env.BASEURL || 'http://esbprd.lcfuturecenter.com:8888';
@@ -109,6 +113,8 @@ export const lcfc_getUserList: GetUserListFn = async () => {
   console.log('<lcfc_getUserList>:incrementalData : ', incrementalData);
 
   const getUserListURL = new URL(userListUrl, baseUrl);
+  getUserListURL.searchParams.set('authcode', userAuthcode);
+  getUserListURL.searchParams.set('code', userCode);
   const bearToken = Buffer.from(hcpAdmin + ':' + hcpPassword, 'utf-8').toString('base64');
   console.log('<lcfc_getUserList>:req start');
   const response = await axios.request<{
@@ -149,6 +155,9 @@ export const lcfc_getUserList: GetUserListFn = async () => {
 
 export const lcfc_getOrgList: GetOrgListFn = async () => {
   const getOrglistURL = new URL(orgListUrl, baseUrl);
+  getOrglistURL.searchParams.set('authcode', orgAuthcode);
+  getOrglistURL.searchParams.set('code', orgCode);
+
   const bearToken = Buffer.from(hcpAdmin + ':' + hcpPassword, 'utf-8').toString('base64');
 
   console.log('<lcfc_getOrgList>:req start');
