@@ -201,7 +201,7 @@ export const lcfc_getOrgList: GetOrgListFn = async () => {
   const rootOrg = allData.find((org) => org.parentId === '');
 
 
-  const tempOrg = {id:'10086',name:'HCP_TEMP_ORG',parentId:rootOrg?.id}
+  const tempOrg = {id:'10086',name:'HCP_TEMP_ORG',parentId:rootOrg?.id||''}
 
   console.log('<lcfc_getOrgList>: 临时部门',tempOrg)
 
