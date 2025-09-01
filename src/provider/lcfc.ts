@@ -70,13 +70,16 @@ export const lcfc_oauth2_redirectFn: RedirectFn = async ({ redirect_uri, state }
 };
 
 export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
+  // 获取access_token 的鉴权
+  const accessTokenBase64 = Buffer.from(ClientID + ':' + ClientSecret, 'utf-8').toString('base64');
   const {
     data: { access_token }
   } = await axios.request({
     url: OAuth2TokenURL,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${accessTokenBase64}`
     },
     data: new URLSearchParams({
       grant_type: 'authorization_code',
