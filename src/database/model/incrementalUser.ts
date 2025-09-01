@@ -5,7 +5,7 @@ import type { Document } from 'mongoose';
 export interface IncrementalUserData {
   username: string;
   memberName: string;
-  avatar: string;
+  avatar?: string;
   contact: string;
   orgs: Array<string>;
 }
@@ -13,7 +13,7 @@ export interface IncrementalUserData {
 export interface IIncrementalUser extends Document {
   username: string;
   memberName: string;
-  avatar: string;
+  avatar?: string;
   contact: string;
   orgs: Array<string>;
   createdAt: Date;
@@ -25,8 +25,7 @@ const IncrementalUserSchema: Schema = new Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
-      index: true
+      unique: true
     },
     memberName: {
       type: String,
@@ -34,7 +33,7 @@ const IncrementalUserSchema: Schema = new Schema(
     },
     avatar: {
       type: String,
-      required: true
+      required: false
     },
     contact: {
       type: String,
@@ -53,7 +52,7 @@ const IncrementalUserSchema: Schema = new Schema(
 );
 
 // 基础索引
-IncrementalUserSchema.index({ username: 1 });
+
 IncrementalUserSchema.index({ memberName: 1 });
 
 export default mongoose.model<IIncrementalUser>('IncrementalUser', IncrementalUserSchema);

@@ -192,7 +192,7 @@ export const lcfc_getOrgList: GetOrgListFn = async () => {
 
   const allData = response.data.data.map((org) => ({
     id: org.SegmentNo,
-    name: org.SegmentEName,
+    name: org.SegmentName,
     parentId: org.ParentSegmentNo
   }));
   console.log('<lcfc_getOrgList>:check data : ', allData);
