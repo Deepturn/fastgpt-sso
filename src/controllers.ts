@@ -263,6 +263,8 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
 
     console.log('<handleIncrementalUsers>:userData : ', userData);
 
+    console.log('<handleIncrementalUsers> type isquit : ', typeof isquit);
+
     if (isquit === '0') {
       const result = await IncrementalUserService.addIncrementalUser(userData);
       console.log('<handleIncrementalUsers>:isquit === str 0 : ', result);
