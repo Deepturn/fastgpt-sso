@@ -79,7 +79,7 @@ export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${accessTokenBase64}`
+      'Authorization': `Basic ${accessTokenBase64}`
     },
     data: new URLSearchParams({
       grant_type: 'authorization_code',
