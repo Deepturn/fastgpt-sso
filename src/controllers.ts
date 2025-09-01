@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { getProvider } from "provider";
 import { getErrText } from "utils";
 import type { LcfcUserListType } from "type";
+import { UserPrefix } from "userPrefix";
 export const handleGetAuthUrl = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
@@ -257,7 +258,7 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
 
     if (isquit === "0") {
       const userData = {
-        username: key,
+        username: `${UserPrefix.LCFC}-${key}`,
         memberName: name,
         avatar: "",
         contact: mobile || email,
@@ -268,7 +269,7 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
       console.log("<handleIncrementalUsers>:isquit === str 0 : ", result);
     } else {
       const userData = {
-        username: key,
+        username: `${UserPrefix.LCFC}-${key}`,
         memberName: name,
         avatar: "",
         contact: mobile || email,

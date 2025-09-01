@@ -100,7 +100,7 @@ export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
   const contact = getNestedValue(data, OAuth2ContactMap);
 
   return {
-    username,
+    username:`${UserPrefix.LCFC}-${username}`,
     avatar,
     memberName,
     contact

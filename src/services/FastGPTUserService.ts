@@ -100,11 +100,11 @@ export class FastGPTUserService {
     const mapStatus = (status: string): string => {
       switch (status) {
         case "active":
-          return "在职";
-        case "inactive":
-          return "离职";
+          return "1";
+        case "forbidden":
+          return "0";
         default:
-          return "未知";
+          return "0";
       }
     };
 
@@ -123,7 +123,7 @@ export class FastGPTUserService {
       status: mapStatus(fastgptUser.status || "active"),
       isPublic: "0", // 增量用户为0，非增量为1
       isPartners: "0", // 增量用户为1，非增量为0
-      period: "长期有效",
+      period: "100",
       createTime: formatCreateTime(fastgptUser.userInfo?.createTime || ""),
       disableTime: "",
     };
@@ -135,6 +135,16 @@ export class FastGPTUserService {
    */
   static async getIncrementalUsers(): Promise<lcfcUser[]> {
     try {
+      const processUsername = (username: string): string => {
+      if (!username) return "";
+
+      if (username.includes("-")) {
+        return username.split("-")[1];
+      }
+
+      // 其他前缀处理逻辑可以在这里添加
+      return username;
+    };
       // 查询增量用户表，而不是team_members表
       const incrementalUsers = await IncrementalUser.find({}).lean();
 
@@ -158,14 +168,24 @@ export class FastGPTUserService {
   private static transformIncrementalUserToLcfcUser(
     incrementalUser: any
   ): lcfcUser {
+      const processUsername = (username: string): string => {
+      if (!username) return "";
+
+      if (username.includes("-")) {
+        return username.split("-")[1];
+      }
+
+      // 其他前缀处理逻辑可以在这里添加
+      return username;
+    };
     return {
       name: incrementalUser.memberName || "Member",
       acctName: incrementalUser.memberName || "Member",
-      key: incrementalUser.username,
+      key: processUsername(incrementalUser.username),
       status: incrementalUser.status, // 增量用户状态
       isPublic: "0", // 增量用户为0
       isPartners: "0", // 增量用户为1
-      period: "长期有效",
+      period: "100",
       createTime: incrementalUser.createdAt
         ? new Date(incrementalUser.createdAt).toISOString().split("T")[0]
         : "",
@@ -239,7 +259,7 @@ export class FastGPTUserService {
           if (incrementalUser.status === "forbidden") {
             return {
               ...user,
-              status: "离职", // 用incrementalUsers的最新status覆盖
+              status: "0", // 用incrementalUsers的最新status覆盖
               isPublic: "0", // 增量用户且active状态时设为0
               isPartners: "0" // 增量用户且active状态时设为1
             };
