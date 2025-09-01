@@ -7,6 +7,7 @@ export interface IncrementalUserData {
   memberName: string;
   avatar?: string;
   contact: string;
+  status: 'active' | 'forbidden';
   orgs: Array<string>;
 }
 
@@ -15,6 +16,7 @@ export interface IIncrementalUser extends Document {
   memberName: string;
   avatar?: string;
   contact: string;
+  status: 'active' | 'forbidden';
   orgs: Array<string>;
   createdAt: Date;
   updatedAt: Date;
@@ -38,6 +40,11 @@ const IncrementalUserSchema: Schema = new Schema(
     contact: {
       type: String,
       required: true
+    },
+    status: {
+      type: String,
+      required: true,
+      default: 'active'
     },
     orgs: {
       type: [String],

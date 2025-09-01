@@ -1,11 +1,11 @@
-import type { Request, Response } from 'express';
-import { getProvider } from 'provider';
-import { getErrText } from 'utils';
-import type { LcfcUserListType } from 'type';
+import type { Request, Response } from "express";
+import { getProvider } from "provider";
+import { getErrText } from "utils";
+import type { LcfcUserListType } from "type";
 export const handleGetAuthUrl = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { redirectFn } = provider;
 
@@ -17,8 +17,8 @@ export const handleGetAuthUrl = async (req: Request, res: Response) => {
         const authURL = new URL(req.originalUrl, process.env.HOSTNAME);
         res.status(200).json({
           success: true,
-          message: '',
-          authURL: authURL.toString()
+          message: "",
+          authURL: authURL.toString(),
         });
       }
     }
@@ -30,19 +30,19 @@ export const handleGetAuthUrl = async (req: Request, res: Response) => {
   };
 
   if (!redirect_uri) {
-    return res.status(400).json({ error: 'redirect_uri is required' });
+    return res.status(400).json({ error: "redirect_uri is required" });
   }
 
   try {
     const { redirectUrl } = await redirectFn({ req, redirect_uri, state });
     res.status(200).json({
       success: true,
-      message: '',
-      authURL: redirectUrl
+      message: "",
+      authURL: redirectUrl,
     });
   } catch (error) {
     res.status(500).json({
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -50,21 +50,21 @@ export const handleGetAuthUrl = async (req: Request, res: Response) => {
 export const handleSAMLMetadata = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { getMetaData } = provider;
 
   if (!getMetaData) {
-    return res.status(400).json({ error: 'getMetaData is required' });
+    return res.status(400).json({ error: "getMetaData is required" });
   }
 
   try {
     const metadata = await getMetaData();
-    res.set('Content-Type', 'application/xml');
+    res.set("Content-Type", "application/xml");
     res.send(metadata);
   } catch (error) {
     res.status(500).json({
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -72,12 +72,12 @@ export const handleSAMLMetadata = async (req: Request, res: Response) => {
 export const handleCallback = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { callbackFn } = provider;
 
   if (!callbackFn) {
-    return res.status(400).json({ error: 'callbackFn is required' });
+    return res.status(400).json({ error: "callbackFn is required" });
   }
 
   try {
@@ -85,7 +85,7 @@ export const handleCallback = async (req: Request, res: Response) => {
     res.redirect(redirectUrl);
   } catch (error) {
     res.status(500).json({
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -97,14 +97,16 @@ export const handleSAMLAssert = async (req: Request, res: Response) => {
   };
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { assertFn } = provider;
   if (!assertFn) {
-    return res.status(400).json({ error: 'assertFn is required' });
+    return res.status(400).json({ error: "assertFn is required" });
   }
   if (!SAMLResponse) {
-    return res.status(400).json({ error: 'SAMLResponse and RelayState is required' });
+    return res
+      .status(400)
+      .json({ error: "SAMLResponse and RelayState is required" });
   }
 
   try {
@@ -112,7 +114,7 @@ export const handleSAMLAssert = async (req: Request, res: Response) => {
     res.redirect(redirectUrl);
   } catch (error) {
     res.status(500).json({
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -120,7 +122,7 @@ export const handleSAMLAssert = async (req: Request, res: Response) => {
 export const handleGetUserInfo = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { getUserInfo } = provider;
 
@@ -128,7 +130,7 @@ export const handleGetUserInfo = async (req: Request, res: Response) => {
     const { code } = req.query as { code: string };
 
     if (!code) {
-      throw new Error('code is required');
+      throw new Error("code is required");
     }
 
     const userInfo = await getUserInfo(code);
@@ -136,13 +138,13 @@ export const handleGetUserInfo = async (req: Request, res: Response) => {
     // 返回用户信息
     res.json({
       success: true,
-      message: '',
-      ...userInfo
+      message: "",
+      ...userInfo,
     });
   } catch (error: any) {
     res.json({
       success: false,
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -150,24 +152,24 @@ export const handleGetUserInfo = async (req: Request, res: Response) => {
 export const handleGetUserList = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { getUserList } = provider;
   if (!getUserList) {
-    return res.status(400).json({ error: 'getUserList is required' });
+    return res.status(400).json({ error: "getUserList is required" });
   }
 
   try {
     const userList = await getUserList();
     res.json({
       success: true,
-      message: '',
-      userList
+      message: "",
+      userList,
     });
   } catch (error: any) {
     res.json({
       success: false,
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -175,24 +177,24 @@ export const handleGetUserList = async (req: Request, res: Response) => {
 export const handleGetOrgList = async (req: Request, res: Response) => {
   const provider = getProvider();
   if (!provider) {
-    return res.status(400).json({ error: 'provider is required' });
+    return res.status(400).json({ error: "provider is required" });
   }
   const { getOrgList } = provider;
   if (!getOrgList) {
-    return res.status(400).json({ error: 'getOrgList is required' });
+    return res.status(400).json({ error: "getOrgList is required" });
   }
 
   try {
     const orgList = await getOrgList();
     res.json({
       success: true,
-      message: '',
-      orgList
+      message: "",
+      orgList,
     });
   } catch (error: any) {
     res.json({
       success: false,
-      message: getErrText(error)
+      message: getErrText(error),
     });
   }
 };
@@ -200,23 +202,23 @@ export const handleGetOrgList = async (req: Request, res: Response) => {
 //get all user data from db
 export const handleUserList = async (req: Request, res: Response) => {
   try {
-    const { FastGPTUserService } = await import('./database');
-    console.log('<handleUserList>:start');
+    const { FastGPTUserService } = await import("./database");
+    console.log("<handleUserList>:start");
     let data: LcfcUserListType = [];
     data = await FastGPTUserService.getAllUsers();
-    console.log('<handleUserList>:end');
-    console.log('<handleUserList>:data : ', data);
+    console.log("<handleUserList>:end");
+    console.log("<handleUserList>:data : ", data);
     return res.json({
       code: 1000,
-      msg: '用户列表获取成功',
-      data
+      msg: "用户列表获取成功",
+      data,
     });
   } catch (error: any) {
-    console.error('获取用户列表失败:', error);
+    console.error("获取用户列表失败:", error);
     return res.json({
       code: 5000,
-      msg: `获取用户列表失败: ${error.message || '未知错误'}`,
-      data: []
+      msg: `获取用户列表失败: ${error.message || "未知错误"}`,
+      data: [],
     });
   }
 };
@@ -224,16 +226,16 @@ export const handleUserList = async (req: Request, res: Response) => {
 // add incremental user to db
 export const handleIncrementalUsers = async (req: Request, res: Response) => {
   try {
-    const { IncrementalUserService } = await import('./database');
+    const { IncrementalUserService } = await import("./database");
     const { body } = req;
 
-    console.log('<handleIncrementalUsers>:req body : ', body);
+    console.log("<handleIncrementalUsers>:req body : ", body);
 
     // 验证请求体
     if (!body) {
       return res.status(400).json({
         code: 4000,
-        msg: '请求体不能为空'
+        msg: "请求体不能为空",
       });
     }
 
@@ -250,39 +252,43 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
       mobile,
       company,
       sex,
-      isquit
+      isquit,
     } = body;
 
-    const userData = {
-      username: key,
-      memberName: name,
-      avatar: '',
-      contact: mobile || email,
-      orgs: ['10086']
-    };
-
-    console.log('<handleIncrementalUsers>:userData : ', userData);
-
-    console.log('<handleIncrementalUsers> type isquit : ', typeof isquit);
-
-    if (isquit === '0') {
+    if (isquit === "0") {
+      const userData = {
+        username: key,
+        memberName: name,
+        avatar: "",
+        contact: mobile || email,
+        orgs: ["10086"],
+        status: "active" as const,
+      };
       const result = await IncrementalUserService.addIncrementalUser(userData);
-      console.log('<handleIncrementalUsers>:isquit === str 0 : ', result);
+      console.log("<handleIncrementalUsers>:isquit === str 0 : ", result);
     } else {
-      const result = await IncrementalUserService.deleteUser(userName);
+      const userData = {
+        username: key,
+        memberName: name,
+        avatar: "",
+        contact: mobile || email,
+        orgs: ["10086"],
+        status: "forbidden" as const,
+      };
+      const result = await IncrementalUserService.updateUser(key,userData)
       console.log('<handleIncrementalUsers>:isquit === str 1 : ', result);
     }
 
     return res.json({
       code: 1000,
-      msg: '增量用户记录添加成功'
+      msg: "增量用户记录添加成功",
     });
   } catch (error) {
-    console.error('处理增量用户记录时出错:', error);
+    console.error("处理增量用户记录时出错:", error);
     return res.status(500).json({
       code: 5000,
-      msg: '服务器内部错误',
-      error: error instanceof Error ? error.message : '未知错误'
+      msg: "服务器内部错误",
+      error: error instanceof Error ? error.message : "未知错误",
     });
   }
 };

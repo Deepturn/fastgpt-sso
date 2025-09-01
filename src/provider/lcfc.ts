@@ -1,6 +1,6 @@
 // OAUTH2.0 Authorization reference: https://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html
 import axios from 'axios';
-import type { GetUserInfoFn, RedirectFn, GetUserListFn, GetOrgListFn } from 'type';
+import type { GetUserInfoFn, RedirectFn, GetUserListFn, GetOrgListFn, UserListType } from 'type';
 import { UserPrefix } from 'userPrefix';
 import type { IncrementalUserData } from '../database/model/incrementalUser';
 import { get } from 'http';
@@ -109,7 +109,7 @@ export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
 
 export const lcfc_getUserList: GetUserListFn = async () => {
   console.log('<lcfc_getUserList>:incrementalData start');
-  const incrementalData: IncrementalUserData[] = await FastGPTUserService.getIncrementalUsersSso();
+  const incrementalData: UserListType = await FastGPTUserService.getIncrementalUsersSso();
   console.log('<lcfc_getUserList>:incrementalData : ', incrementalData);
 
   const getUserListURL = new URL(userListUrl, baseUrl);
