@@ -43,7 +43,13 @@ import {
 
 import { qilu_getOrgList, qilu_getUserInfo, qilu_redirectFn, qilu_getUserList } from './qilu';
 import { mrl_getUserInfo, mrl_redirectFn } from './mrl';
-import { hk_getUserInfo, hk_redirectFn,hk_getOrgList,hk_getUserList } from './hk';
+import { hk_getUserInfo, hk_redirectFn, hk_getOrgList, hk_getUserList } from './hk';
+import {
+  lcfc_getOrgList,
+  lcfc_getUserList,
+  lcfc_oauth2_getUserInfo,
+  lcfc_oauth2_redirectFn
+} from './lcfc';
 const providerMap: {
   [key: string]: {
     getUserInfo: GetUserInfoFn;
@@ -130,11 +136,17 @@ const providerMap: {
     getUserInfo: mrl_getUserInfo,
     redirectFn: mrl_redirectFn
   },
-  hk:{
+  hk: {
     getUserInfo: hk_getUserInfo,
     redirectFn: hk_redirectFn,
     getUserList: hk_getUserList,
     getOrgList: hk_getOrgList
+  },
+  lcfc: {
+    getOrgList: lcfc_getOrgList,
+    getUserList: lcfc_getUserList,
+    getUserInfo: lcfc_oauth2_getUserInfo,
+    redirectFn: lcfc_oauth2_redirectFn
   }
 };
 
