@@ -63,6 +63,7 @@ export const lcfc_oauth2_redirectFn: RedirectFn = async ({ redirect_uri, state }
   }
 
   cache_redirect_uri = redirect_uri;
+  console.log('<lcfc_oauth2_redirectFn>: ',url.toString())
   return {
     redirectUrl: url.toString()
   };
@@ -93,11 +94,14 @@ export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
       Authorization: `Bearer ${access_token}`
     }
   });
+  console.log('<lcfc_oauth2_getUserInfo>:data : ', data);
 
   const username = getNestedValue(data, OAuth2UsernameMap);
+  console.log('<lcfc_oauth2_getUserInfo>:username : ', username);
   const avatar = getNestedValue(data, OAuth2AvatarMap);
   const memberName = getNestedValue(data, OAuth2MemberNameMap);
   const contact = getNestedValue(data, OAuth2ContactMap);
+  console.log('<lcfc_oauth2_getUserInfo>:username : ', `${UserPrefix.LCFC}-${username}`);
 
   return {
     username:`${UserPrefix.LCFC}-${username}`,
