@@ -53,7 +53,7 @@ const IncrementalUserSchema: Schema = new Schema(
 );
 
 // 基础索引
-IncrementalUserSchema.index({ userame: 1 });
+IncrementalUserSchema.index({ username: 1 });
 IncrementalUserSchema.index({ memberName: 1 });
 
 export default mongoose.model<IIncrementalUser>('IncrementalUser', IncrementalUserSchema);
