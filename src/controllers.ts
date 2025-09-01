@@ -254,7 +254,7 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
     } = body;
 
     const userData = {
-      username: userName,
+      username: key,
       memberName: name,
       avatar: '',
       contact: mobile || email,
