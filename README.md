@@ -7,7 +7,7 @@
 1. 安装 bun
 2. 安装依赖 `bun install`
 3. 启动 `npm run dev`
-4. 打包：`docker buildx build --platform=linux/amd64  -f ./projects/sso/Dockerfile -t registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt-sso:v4.8.14 .`
+4. 打包：`docker buildx build --platform=linux/amd64  -f ./projects/sso/Dockerfile -t registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt-sso:v4.12.2 .`
 
 ## 部署方式
 
