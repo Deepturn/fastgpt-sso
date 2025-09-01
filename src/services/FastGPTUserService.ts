@@ -121,8 +121,8 @@ export class FastGPTUserService {
       acctName: fastgptUser.name || "Member",
       key: processUsername(fastgptUser.userInfo?.username || ""),
       status: mapStatus(fastgptUser.status || "active"),
-      isPublic: isIncremental ? "0" : "1", // 增量用户为0，非增量为1
-      isPartners: isIncremental ? "1" : "0", // 增量用户为1，非增量为0
+      isPublic: "0", // 增量用户为0，非增量为1
+      isPartners: "0", // 增量用户为1，非增量为0
       period: "长期有效",
       createTime: formatCreateTime(fastgptUser.userInfo?.createTime || ""),
       disableTime: "",
@@ -164,7 +164,7 @@ export class FastGPTUserService {
       key: incrementalUser.username,
       status: "在职", // 增量用户默认为在职状态
       isPublic: "0", // 增量用户为0
-      isPartners: "1", // 增量用户为1
+      isPartners: "0", // 增量用户为1
       period: "长期有效",
       createTime: incrementalUser.createdAt
         ? new Date(incrementalUser.createdAt).toISOString().split("T")[0]
@@ -241,7 +241,7 @@ export class FastGPTUserService {
               ...user,
               status: "离职", // 用incrementalUsers的最新status覆盖
               isPublic: "0", // 增量用户且active状态时设为0
-              isPartners: "1" // 增量用户且active状态时设为1
+              isPartners: "0" // 增量用户且active状态时设为1
             };
           } else {
             // 增量用户存在但不是active状态
@@ -254,7 +254,11 @@ export class FastGPTUserService {
         return user;
       });
 
-      return updatedRegularUsers;
+      //剔除updatedRegularUsers中的root 
+      const filteredUsers = updatedRegularUsers.filter(user => user.key !== 'root');
+      return filteredUsers;
+
+      //return updatedRegularUsers;
     } catch (error) {
       console.error("获取所有用户列表失败:", error);
       throw error;
