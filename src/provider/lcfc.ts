@@ -106,8 +106,11 @@ export const lcfc_oauth2_getUserInfo: GetUserInfoFn = async (code: string) => {
   const contact = getNestedValue(data, OAuth2ContactMap);
   console.log('<lcfc_oauth2_getUserInfo>:username : ', `${UserPrefix.LCFC}-${username}`);
 
+
+  const usernameUpper = username.toUpperCase();
+
   return {
-    username:`${UserPrefix.LCFC}-${username}`,
+    username:`${UserPrefix.LCFC}-${usernameUpper}`,
     avatar,
     memberName,
     contact
