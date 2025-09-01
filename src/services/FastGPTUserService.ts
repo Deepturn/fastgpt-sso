@@ -151,7 +151,7 @@ export class FastGPTUserService {
     return {
       name: incrementalUser.memberName || 'Member',
       acctName: incrementalUser.memberName || 'Member',
-      key: incrementalUser.userName,
+      key: incrementalUser.username,
       status: '在职', // 增量用户默认为在职状态
       isPublic: '0', // 增量用户为0
       isPartners: '1', // 增量用户为1
