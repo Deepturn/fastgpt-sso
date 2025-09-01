@@ -258,7 +258,7 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
       memberName: name,
       avatar: '',
       contact: mobile || email,
-      orgs: [deptCode]
+      orgs: ['10086']
     };
 
     console.log('<handleIncrementalUsers>:userData : ', userData);

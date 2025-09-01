@@ -187,12 +187,17 @@ export const lcfc_getOrgList: GetOrgListFn = async () => {
 
   console.log('<lcfc_getOrgList>:req end');
 
-  const data = response.data.data.map((org) => ({
+  const tempOrg = {id:'10086',name:'HCP_TEMP_ORG',parentId:''}
+  console.log('<lcfc_getOrgList>: 临时部门',tempOrg)
+
+  const allData = response.data.data.map((org) => ({
     id: org.SegmentNo,
     name: org.SegmentEName,
     parentId: org.ParentSegmentNo
   }));
-  console.log('<lcfc_getOrgList>:check data : ', data);
+  console.log('<lcfc_getOrgList>:check data : ', allData);
+
+  const data = [...allData,tempOrg]
 
   return data;
 };
