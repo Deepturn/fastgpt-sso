@@ -144,11 +144,11 @@ export const lcfc_getUserList: GetUserListFn = async () => {
     contact: '',
     orgs: [user.SegmentNoSz]
   }));
-  console.log('<lcfc_getUserList>:check hcpData : ', hcpData);
+  // console.log('<lcfc_getUserList>:check hcpData : ', hcpData);
 
   const data = [...hcpData, ...incrementalData];
 
-  console.log('<lcfc_getUserList>:check data : ', data);
+  // console.log('<lcfc_getUserList>:check data : ', data);
 
   return data;
 };
@@ -206,7 +206,7 @@ export const lcfc_getOrgList: GetOrgListFn = async () => {
   console.log('<lcfc_getOrgList>: 临时部门',tempOrg)
 
 
-  console.log('<lcfc_getOrgList>:check data : ', allData);
+  // console.log('<lcfc_getOrgList>:check data : ', allData);
 
   const data = [...allData,tempOrg]
 
