@@ -236,10 +236,10 @@ export class FastGPTUserService {
         const incrementalUser = incrementalUserMap.get(user.key);
         if (incrementalUser) {
           // 如果增量用户存在且status为"在职"(对应active状态)
-          if (incrementalUser.status === "在职") {
+          if (incrementalUser.status === "active") {
             return {
               ...user,
-              status: incrementalUser.status, // 用incrementalUsers的最新status覆盖
+              status: "在职", // 用incrementalUsers的最新status覆盖
               isPublic: "0", // 增量用户且active状态时设为0
               isPartners: "1" // 增量用户且active状态时设为1
             };
