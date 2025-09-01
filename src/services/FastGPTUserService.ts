@@ -213,7 +213,7 @@ export class FastGPTUserService {
     return this.getUserList(false);
   }
 
-    /**
+  /**
    * 获取所有用户列表（包含增量和非增量）
    * @returns lcfcUser数组
    */
@@ -224,25 +224,35 @@ export class FastGPTUserService {
         this.getIncrementalUsers(),
       ]);
 
-      // 创建incrementalUsers的key到status的映射
-      const incrementalStatusMap = new Map<string, string>();
+      // 创建incrementalUsers的key到用户信息的映射
+      const incrementalUserMap = new Map<string, lcfcUser>();
+
       incrementalUsers.forEach(user => {
-        incrementalStatusMap.set(user.key, user.status);
+        incrementalUserMap.set(user.key, user);
       });
 
-      // 使用incrementalUsers的status更新regularUsers中对应用户的status
+      // 使用incrementalUsers的信息更新regularUsers中对应用户
       const updatedRegularUsers = regularUsers.map(user => {
-        const incrementalStatus = incrementalStatusMap.get(user.key);
-        if (incrementalStatus) {
-          return {
-            ...user,
-            status: incrementalStatus // 用incrementalUsers的最新status覆盖
-          };
+        const incrementalUser = incrementalUserMap.get(user.key);
+        if (incrementalUser) {
+          // 如果增量用户存在且status为"在职"(对应active状态)
+          if (incrementalUser.status === "在职") {
+            return {
+              ...user,
+              status: incrementalUser.status, // 用incrementalUsers的最新status覆盖
+              isPublic: "0", // 增量用户且active状态时设为0
+              isPartners: "1" // 增量用户且active状态时设为1
+            };
+          } else {
+            // 增量用户存在但不是active状态
+            return {
+              ...user,
+              status: incrementalUser.status
+            };
+          }
         }
         return user;
       });
-
-      
 
       return updatedRegularUsers;
     } catch (error) {
