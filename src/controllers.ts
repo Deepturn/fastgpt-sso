@@ -276,7 +276,7 @@ export const handleIncrementalUsers = async (req: Request, res: Response) => {
         orgs: ["10086"],
         status: "forbidden" as const,
       };
-      const result = await IncrementalUserService.updateUser(key,userData)
+      const result = await IncrementalUserService.updateUser(`${UserPrefix.LCFC}-${key}`,userData)
       console.log('<handleIncrementalUsers>:isquit === str 1 : ', result);
     }
 
